@@ -6,10 +6,15 @@
 <body>
 <style>
 
-         @import "https://fonts.googleapis.com/css?family=Metal%20Mania";
+         @import url("https://fonts.googleapis.com/css?family=Metal%20Mania");
          @import url('https://fonts.googleapis.com/css2?family=Balsamiq+Sans&display=swap');
 
 </style>
+<div id="searchBar">
+  <!-- <label for="searchBar">Search:</label> -->
+  <input type="tex" name="search" placeholder="type to search"></input>
+  <button type="button" name="search">Cancel</button>
+</div>
 
 <h1>Fonts!</h1>
 <p>This is a website where you can see what kind of fonts there are and
@@ -22,6 +27,68 @@
 <h2 style="font-family: Metal Mania;">Metal Mania</h2>
 <h2 style="font-family: old english text mt;">old english text mt</h2>
 <h2 style= "font-family: 'Balsamiq Sans', cursive;">Balsamiq Sans</h2>
+<script>
+	
+	/**
+	 * Event Handlers
+	 */
+	function onSearch() {
+		document.querySelectorAll("h2").forEach(el => {
+			let search = document.querySelector("input[name='search']");
+			if(String(el.innerText)
+				.toLocaleLowerCase()
+				.includes(String(search.value).toLocaleLowerCase())
+			) {
+				el.style.backgroundColor = "#e5fcde";
+				el.style.visibility = "visible";
+				el.style.display = "block";
+			} else {
+				el.style.backgroundColor = "transparent";
+				el.style.visibility = "hidden";
+				el.style.display = "none";
+			}
+		});
+	}
 
+	function resetSearch() {
+		document.querySelectorAll("h2").forEach(el => {
+			/**
+			 * manage any CSS property: 
+			 * https://www.w3schools.com/js/js_htmldom_css.asp
+			 * 
+			 * manage visibility:
+			 * https://www.w3schools.com/cssref/pr_class_visibility.asp
+			 *
+			 * get computer property value:
+			 * el.computedStyleMap().get("visibility").value
+			 */
+			el.style.backgroundColor = "transparent";
+			el.style.visibility = "visible";
+			el.style.display = "block";
+		});
+	}
+	
+	/**
+	 * when the whole page has been loaded, assign below functionality to some iof its elements:
+	 */
+	document.addEventListener("DOMContentLoaded", () => {
+		
+		/**
+		 * Keyboard events:
+		 * https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent
+		 */
+		document.querySelector("input[name='search']").addEventListener("keyup", (event) => {
+			if(event.target.value.length > 2) {
+				onSearch();
+			} else if (event.target.value.length == 2 && event.code == "Backspace") {
+				resetSearch();
+			}
+		});
+		
+		document.querySelector("button[name='search']").addEventListener("click", () => {
+			document.querySelector("input[name='search']").value = "";
+		});
+	});
+</script>
 </body>
 </html>
